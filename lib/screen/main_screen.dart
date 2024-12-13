@@ -1,6 +1,8 @@
 import 'package:currency_converter/widgets/currency_conversion_field.dart';
 import 'package:flutter/material.dart';
 
+import '../data/enum/currencies.dart';
+
 class MainScreen extends StatefulWidget {
   const MainScreen({super.key});
 
@@ -9,6 +11,8 @@ class MainScreen extends StatefulWidget {
 }
 
 class _MainScreenState extends State<MainScreen> {
+  late Currencies selectedCurrency = Currencies.brl;
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -50,19 +54,18 @@ class _MainScreenState extends State<MainScreen> {
                   ),
                 ),
                 Padding(
-                  padding: const EdgeInsets.symmetric(
-                    horizontal: 24.0,
-                    vertical: 24,
-                  ),
-                  child: Card(
-                    margin: EdgeInsets.zero,
-                    color: Colors.white,
-                    elevation: 2,
-                    shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(8),
+                    padding: const EdgeInsets.symmetric(
+                      horizontal: 24.0,
+                      vertical: 24,
                     ),
-                    child: Column(
-                      children: [
+                    child: Card(
+                      margin: EdgeInsets.zero,
+                      color: Colors.white,
+                      elevation: 2,
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(8),
+                      ),
+                      child: Column(children: [
                         const CurrencyConversionField(fieldType: 'Amount'),
                         Stack(
                           alignment: Alignment.center,
@@ -79,12 +82,97 @@ class _MainScreenState extends State<MainScreen> {
                                 child: const Icon(Icons.swap_vert_outlined)),
                           ],
                         ),
-                        const CurrencyConversionField(
-                            fieldType: 'Converted Amount'),
-                      ],
-                    ),
-                  ),
-                ),
+                        // const CurrencyConversionField(
+                        //     fieldType: 'Converted Amount'),
+                        Padding(
+                          padding: const EdgeInsets.all(16),
+                          child: Column(
+                            children: [
+                              const Row(
+                                children: [
+                                  Padding(
+                                    padding: EdgeInsets.only(bottom: 8.0),
+                                    child: Text(
+                                      'Converted Amount',
+                                      style: TextStyle(
+                                          color: Colors.grey,
+                                          fontWeight: FontWeight.w700,
+                                          fontSize: 16),
+                                    ),
+                                  )
+                                ],
+                              ),
+                              Row(
+                                children: [
+                                  Align(
+                                    alignment: Alignment.centerLeft,
+                                    child: SizedBox(
+                                      height: 50,
+                                      child: DropdownButton<Currencies>(
+                                        value: selectedCurrency,
+                                        items:
+                                            Currencies.values.map((currency) {
+                                          return DropdownMenuItem<Currencies>(
+                                            value: currency,
+                                            child: Column(
+                                              children: [
+                                                Text(
+                                                  currency.name.toUpperCase(),
+                                                  style: const TextStyle(
+                                                    fontSize: 28,
+                                                    color: Colors.teal,
+                                                  ),
+                                                ),
+                                                const Divider(
+                                                  thickness: 1,
+                                                  color: Colors.grey,
+                                                  height: 4,
+                                                ),
+                                              ],
+                                            ),
+                                          );
+                                        }).toList(),
+                                        onChanged: (newCurrency) {
+                                          setState(() {
+                                            selectedCurrency = newCurrency!;
+                                          });
+                                        },
+                                        underline: const SizedBox(),
+                                        icon: const Icon(Icons.arrow_drop_down),
+                                      ),
+                                    ),
+                                  ),
+                                  Expanded(
+                                    child: Container(
+                                      height: 50,
+                                      padding: const EdgeInsets.symmetric(
+                                          horizontal: 8),
+                                      decoration: BoxDecoration(
+                                        color: Colors.grey[200],
+                                        borderRadius: BorderRadius.circular(8),
+                                        border: Border.all(
+                                          color: Colors.transparent,
+                                        ),
+                                      ),
+                                      alignment: Alignment.centerRight,
+                                      child: const Text(
+                                        '0,00',
+                                        style: TextStyle(
+                                          fontSize: 32,
+                                          fontWeight: FontWeight.bold,
+                                          color: Colors.black,
+                                        ),
+                                        textAlign: TextAlign.right,
+                                      ),
+                                    ),
+                                  ),
+                                ],
+                              ),
+                            ],
+                          ),
+                        ),
+                      ]),
+                    )),
                 const Padding(
                   padding: EdgeInsets.symmetric(
                     horizontal: 24,

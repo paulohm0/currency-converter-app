@@ -95,6 +95,7 @@ class _CurrencyConversionFieldState extends State<CurrencyConversionField> {
                   keyboardType: TextInputType.number,
                   textAlign: TextAlign.right,
                   decoration: InputDecoration(
+                    hintText: '0,00',
                     filled: true,
                     fillColor: Colors.grey[200],
                     contentPadding: const EdgeInsets.symmetric(

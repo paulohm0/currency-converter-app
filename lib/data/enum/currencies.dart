@@ -3,5 +3,5 @@ enum Currencies {
   eur,
   brl,
   jpy,
-  gpb,
+  gbp,
 }
