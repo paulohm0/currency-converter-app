@@ -72,7 +72,7 @@ class _MainScreenState extends State<MainScreen> {
                                 style: ElevatedButton.styleFrom(
                                   shape: const CircleBorder(),
                                   padding: const EdgeInsets.all(16),
-                                  backgroundColor: const Color(0xFF26278D),
+                                  backgroundColor: Colors.green, // 0xFF26278D
                                   foregroundColor: Colors.white,
                                 ),
                                 onPressed: () {},

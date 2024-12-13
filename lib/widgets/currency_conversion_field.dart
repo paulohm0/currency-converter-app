@@ -1,6 +1,7 @@
 import 'package:currency_converter/data/enum/currencies.dart';
+import 'package:currency_text_input_formatter/currency_text_input_formatter.dart';
 import 'package:flutter/material.dart';
-import 'package:intl/intl.dart';
+import 'package:flutter/services.dart';
 
 class CurrencyConversionField extends StatefulWidget {
   final String fieldType;
@@ -14,22 +15,12 @@ class CurrencyConversionField extends StatefulWidget {
 class _CurrencyConversionFieldState extends State<CurrencyConversionField> {
   late Currencies selectedCurrency = Currencies.brl;
   final TextEditingController controller = TextEditingController();
-  final NumberFormat currencyFormatter = NumberFormat.decimalPattern('pt_BR');
-
-  void onChangedAmountValue(String value) {
-    String valueConfig = value.replaceAll(RegExp(r'[^\d]'), '');
-    if (valueConfig.isEmpty) valueConfig = '0.00';
-
-    final double parsedValue = double.parse(valueConfig) / 100;
-    final formatted = currencyFormatter.format(parsedValue);
-
-    setState(() {
-      controller.value = TextEditingValue(
-        text: formatted,
-        selection: TextSelection.collapsed(offset: formatted.length),
-      );
-    });
-  }
+  final CurrencyTextInputFormatter currencyFormatter =
+      CurrencyTextInputFormatter.currency(
+    locale: 'pt_BR',
+    decimalDigits: 2,
+    symbol: '',
+  );
 
   @override
   Widget build(BuildContext context) {
@@ -92,8 +83,15 @@ class _CurrencyConversionFieldState extends State<CurrencyConversionField> {
               ),
               Expanded(
                 child: TextFormField(
-                  onChanged: onChangedAmountValue,
                   controller: controller,
+                  onChanged: (value) {
+                    currencyFormatter.getFormattedValue();
+                    value = currencyFormatter.getUnformattedValue().toString();
+                  },
+                  inputFormatters: [
+                    FilteringTextInputFormatter.digitsOnly,
+                    currencyFormatter
+                  ],
                   keyboardType: TextInputType.number,
                   textAlign: TextAlign.right,
                   decoration: InputDecoration(
