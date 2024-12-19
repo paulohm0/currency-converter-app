@@ -5,9 +5,7 @@ import 'package:dio/dio.dart';
 
 class CoinRepository {
   final Dio dio;
-  final String code;
-  final String codeIn;
-  CoinRepository({required this.dio, required this.code, required this.codeIn});
+  CoinRepository({required this.dio});
 
   Future<CoinModel> getConversion(code, codeIn) async {
     try {

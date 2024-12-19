@@ -1,4 +1,6 @@
+import 'package:currency_converter/data/repository/coin_repository.dart';
 import 'package:currency_converter/widgets/currency_conversion_field.dart';
+import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 
 import '../data/enum/currencies.dart';
@@ -12,6 +14,7 @@ class MainScreen extends StatefulWidget {
 
 class _MainScreenState extends State<MainScreen> {
   late Currencies selectedCurrency = Currencies.brl;
+  final CoinRepository coinRepository = CoinRepository(dio: Dio());
 
   @override
   Widget build(BuildContext context) {
@@ -78,7 +81,9 @@ class _MainScreenState extends State<MainScreen> {
                                   backgroundColor: Colors.green, // 0xFF26278D
                                   foregroundColor: Colors.white,
                                 ),
-                                onPressed: () {},
+                                onPressed: () {
+                                  // coinRepository.getConversion(code, codeIn);
+                                },
                                 child: const Icon(Icons.swap_vert_outlined)),
                           ],
                         ),
