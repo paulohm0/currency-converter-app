@@ -81,8 +81,8 @@ class _MainScreenState extends State<MainScreen> {
                                       foregroundColor: Colors.white),
                                   onPressed: () {
                                     mainViewmodel.getCoinConversion(
-                                      mainViewmodel.inputCurrency.toString(),
-                                      mainViewmodel.outputCurrency.toString(),
+                                      mainViewmodel.inputCurrency.name,
+                                      mainViewmodel.outputCurrency.name,
                                     );
                                   },
                                   child: const Icon(Icons.swap_vert_outlined)),
