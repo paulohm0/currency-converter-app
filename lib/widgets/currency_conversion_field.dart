@@ -5,7 +5,9 @@ import 'package:flutter/services.dart';
 
 class CurrencyConversionField extends StatefulWidget {
   final String fieldType;
-  const CurrencyConversionField({super.key, required this.fieldType});
+  final MainViewmodel mainViewmodel;
+  const CurrencyConversionField(
+      {super.key, required this.fieldType, required this.mainViewmodel});
 
   @override
   State<CurrencyConversionField> createState() =>
@@ -13,8 +15,6 @@ class CurrencyConversionField extends StatefulWidget {
 }
 
 class _CurrencyConversionFieldState extends State<CurrencyConversionField> {
-  final MainViewmodel mainViewmodel = MainViewmodel();
-
   @override
   Widget build(BuildContext context) {
     return Padding(
@@ -42,7 +42,7 @@ class _CurrencyConversionFieldState extends State<CurrencyConversionField> {
                 child: SizedBox(
                   height: 50,
                   child: DropdownButton<Currencies>(
-                    value: mainViewmodel.selectedCurrency,
+                    value: widget.mainViewmodel.inputCurrency,
                     items: Currencies.values.map((currency) {
                       return DropdownMenuItem<Currencies>(
                         value: currency,
@@ -65,7 +65,7 @@ class _CurrencyConversionFieldState extends State<CurrencyConversionField> {
                       );
                     }).toList(),
                     onChanged: (newCurrency) {
-                      mainViewmodel.updateSelectedCurrency(newCurrency!);
+                      widget.mainViewmodel.updateInputCurrency(newCurrency!);
                     },
                     underline: const SizedBox(),
                     icon: const Icon(Icons.arrow_drop_down),
@@ -74,13 +74,13 @@ class _CurrencyConversionFieldState extends State<CurrencyConversionField> {
               ),
               Expanded(
                 child: TextFormField(
-                  controller: mainViewmodel.controller,
+                  controller: widget.mainViewmodel.controller,
                   onChanged: (value) {
-                    mainViewmodel.handleTextChange(value);
+                    widget.mainViewmodel.handleTextChange(value);
                   },
                   inputFormatters: [
                     FilteringTextInputFormatter.digitsOnly,
-                    mainViewmodel.currencyFormatter
+                    widget.mainViewmodel.currencyFormatter
                   ],
                   keyboardType: TextInputType.number,
                   textAlign: TextAlign.right,

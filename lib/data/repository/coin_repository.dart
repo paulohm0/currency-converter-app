@@ -7,7 +7,7 @@ class CoinRepository {
   final Dio dio;
   CoinRepository({required this.dio});
 
-  Future<CoinModel> getConversion(code, codeIn) async {
+  Future<CoinModel> getConversion(String code, String codeIn) async {
     try {
       final apiResponse =
           await dio.get('https://economia.awesomeapi.com.br/all/$code-$codeIn');

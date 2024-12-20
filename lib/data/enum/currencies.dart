@@ -4,4 +4,6 @@ enum Currencies {
   brl,
   jpy,
   gbp,
+  jod,
+  chf,
 }
