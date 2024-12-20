@@ -1,9 +1,8 @@
-import 'package:currency_converter/data/repository/coin_repository.dart';
 import 'package:currency_converter/widgets/currency_conversion_field.dart';
-import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 
 import '../data/enum/currencies.dart';
+import '../viewmodel/main_viewmodel.dart';
 
 class MainScreen extends StatefulWidget {
   const MainScreen({super.key});
@@ -13,8 +12,7 @@ class MainScreen extends StatefulWidget {
 }
 
 class _MainScreenState extends State<MainScreen> {
-  late Currencies selectedCurrency = Currencies.brl;
-  final CoinRepository coinRepository = CoinRepository(dio: Dio());
+  final MainViewmodel mainViewmodel = MainViewmodel();
 
   @override
   Widget build(BuildContext context) {
@@ -81,14 +79,10 @@ class _MainScreenState extends State<MainScreen> {
                                   backgroundColor: Colors.green, // 0xFF26278D
                                   foregroundColor: Colors.white,
                                 ),
-                                onPressed: () {
-                                  // coinRepository.getConversion(code, codeIn);
-                                },
+                                onPressed: () {},
                                 child: const Icon(Icons.swap_vert_outlined)),
                           ],
                         ),
-                        // const CurrencyConversionField(
-                        //     fieldType: 'Converted Amount'),
                         Padding(
                           padding: const EdgeInsets.all(16),
                           child: Column(
@@ -114,7 +108,7 @@ class _MainScreenState extends State<MainScreen> {
                                     child: SizedBox(
                                       height: 50,
                                       child: DropdownButton<Currencies>(
-                                        value: selectedCurrency,
+                                        value: mainViewmodel.selectedCurrency,
                                         items:
                                             Currencies.values.map((currency) {
                                           return DropdownMenuItem<Currencies>(
@@ -138,9 +132,8 @@ class _MainScreenState extends State<MainScreen> {
                                           );
                                         }).toList(),
                                         onChanged: (newCurrency) {
-                                          setState(() {
-                                            selectedCurrency = newCurrency!;
-                                          });
+                                          mainViewmodel.updateSelectedCurrency(
+                                              newCurrency!);
                                         },
                                         underline: const SizedBox(),
                                         icon: const Icon(Icons.arrow_drop_down),

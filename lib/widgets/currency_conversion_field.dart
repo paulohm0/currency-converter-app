@@ -1,5 +1,5 @@
 import 'package:currency_converter/data/enum/currencies.dart';
-import 'package:currency_text_input_formatter/currency_text_input_formatter.dart';
+import 'package:currency_converter/viewmodel/main_viewmodel.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
@@ -13,14 +13,7 @@ class CurrencyConversionField extends StatefulWidget {
 }
 
 class _CurrencyConversionFieldState extends State<CurrencyConversionField> {
-  late Currencies selectedCurrency = Currencies.brl;
-  final TextEditingController controller = TextEditingController();
-  final CurrencyTextInputFormatter currencyFormatter =
-      CurrencyTextInputFormatter.currency(
-    locale: 'pt_BR',
-    decimalDigits: 2,
-    symbol: '',
-  );
+  final MainViewmodel mainViewmodel = MainViewmodel();
 
   @override
   Widget build(BuildContext context) {
@@ -49,7 +42,7 @@ class _CurrencyConversionFieldState extends State<CurrencyConversionField> {
                 child: SizedBox(
                   height: 50,
                   child: DropdownButton<Currencies>(
-                    value: selectedCurrency,
+                    value: mainViewmodel.selectedCurrency,
                     items: Currencies.values.map((currency) {
                       return DropdownMenuItem<Currencies>(
                         value: currency,
@@ -72,9 +65,7 @@ class _CurrencyConversionFieldState extends State<CurrencyConversionField> {
                       );
                     }).toList(),
                     onChanged: (newCurrency) {
-                      setState(() {
-                        selectedCurrency = newCurrency!;
-                      });
+                      mainViewmodel.updateSelectedCurrency(newCurrency!);
                     },
                     underline: const SizedBox(),
                     icon: const Icon(Icons.arrow_drop_down),
@@ -83,14 +74,13 @@ class _CurrencyConversionFieldState extends State<CurrencyConversionField> {
               ),
               Expanded(
                 child: TextFormField(
-                  controller: controller,
+                  controller: mainViewmodel.controller,
                   onChanged: (value) {
-                    currencyFormatter.getFormattedValue();
-                    value = currencyFormatter.getUnformattedValue().toString();
+                    mainViewmodel.handleTextChange(value);
                   },
                   inputFormatters: [
                     FilteringTextInputFormatter.digitsOnly,
-                    currencyFormatter
+                    mainViewmodel.currencyFormatter
                   ],
                   keyboardType: TextInputType.number,
                   textAlign: TextAlign.right,
